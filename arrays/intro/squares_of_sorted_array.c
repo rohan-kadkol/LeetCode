@@ -18,6 +18,7 @@ int* initializeArray() {
   A[4] = 16;
   A[5] = 64;
   printArrayElements(A, SIZE);
+  return A;
 }
 
 int main() {
@@ -25,7 +26,7 @@ int main() {
   int *size = (int*) malloc(sizeof(int));
 
   int *output = sortedSquares(A, SIZE, size);
-  printArrayElements(A, SIZE);
+  printArrayElements(output, SIZE);
   
   free(output);
   free(A);
@@ -36,42 +37,24 @@ int main() {
  */
 int* sortedSquares(int* A, int ASize, int* returnSize){
     int* output = malloc(ASize * sizeof(int));
-    
-    for (int i=0; i<ASize; i++) {
-        output[i] = A[i]*A[i];
+    int i = 0, j = ASize - 1, k = ASize - 1;
+
+    while (i != j) {
+      int leftSq = A[i
+      ]*A[i];
+      int rightSq = A[j]*A[j];
+
+      if (leftSq > rightSq) {
+        output[k--] = leftSq;
+        i++;
+      } else {
+        output[k--] = rightSq;
+        j--;
+      }
     }
-    
-    quickSort(output, 0, ASize-1);
+    output[k] = A[i]*A[i]; // As now i == j after the loop
+
     return output;
-}
-
-void quickSort(int *A, int start, int end) {
-    if (end <= start) return;
-    
-    int mid = partition(A, start, end);
-    
-    quickSort(A, start, mid-1);
-    quickSort(A, mid+1, end);
-}
-
-int partition(int *A, int start, int end) {
-    int pivot = end;
-    int i = start-1;
-    
-    for (int j=start; j<end; j++) {
-        if (A[j] < A[pivot]) {
-            swap(A, ++i, j);
-        }
-    }
-    
-    swap(A, ++i, pivot);
-    return i;
-}
-
-void swap(int *A, int i, int j) {
-    int temp = A[i];
-    A[i] = A[j];
-    A[j] = temp;
 }
 
 void printArrayElements(int *A, int size) {
